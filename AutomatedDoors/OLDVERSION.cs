@@ -12,6 +12,7 @@ using StardewValley.Locations;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Microsoft.Xna.Framework;
 
 namespace AnimalDoorAutomatic
 {

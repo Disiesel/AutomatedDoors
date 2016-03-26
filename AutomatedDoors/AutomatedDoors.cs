@@ -6,11 +6,17 @@ using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Locations;
+using Microsoft.Xna.Framework; 
 
 namespace AutomatedDoors
 {
+
     public class AutomatedDoors : Mod
     {
+        public int openDoors;
+        public int closeDoors;
+        public int openRainyDays;
+
         public static ModConfig AutomatedDoorsConfig { get; private set; }
 
         public override void Entry(params object[] objects)
@@ -23,7 +29,11 @@ namespace AutomatedDoors
 
         void Events_NewDay()
         {
-            Console.WriteLine("TEST");
+        }
+
+        void Events_UpdateTick(object sender, EventArgs e)
+        {
+            if(Game1.timeOfDay == openDoors && !Game1.get_IsWinter()
         }
 
         void runConfig()
