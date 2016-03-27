@@ -59,7 +59,6 @@ namespace AutomatedDoors
  
                     }
 
-
                  else if (Game1.isRaining == false && Game1.isLightning == false)
                     {
                         using (List<Building>.Enumerator enumerator = Game1.getFarm().buildings.GetEnumerator())
