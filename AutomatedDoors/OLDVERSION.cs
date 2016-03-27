@@ -14,7 +14,7 @@ using System.Collections.Generic;
 using System.IO;
 using Microsoft.Xna.Framework;
 
-namespace AnimalDoorAutomatic
+/*namespace AnimalDoorAutomatic
 {
     public class AnimalDoorAutomatic : Mod
     {
@@ -96,7 +96,7 @@ namespace AnimalDoorAutomatic
                                 // ISSUE: explicit reference operation
                                 // ISSUE: cast to a reference type
                                 // ISSUE: explicit reference operation
-                                current.doAction(new Vector((float)(^ (Point &) @current.animalDoor).X + (float)current.tileX, (float)(^ (Point &) @current.animalDoor).Y + (float)current.tileY), (Farmer)Game1.player);
+                                current.doAction(new Vector2((float)(^ (Point &) @current.animalDoor).X + (float)current.tileX, (float)(^ (Point &) @current.animalDoor).Y + (float)current.tileY), (Farmer)Game1.player);
                                 this.gotExecuted1 = true;
                             }
                         }
@@ -200,4 +200,4 @@ namespace AnimalDoorAutomatic
             }
         }
     }
-}
+}*/

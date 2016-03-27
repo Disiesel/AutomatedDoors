@@ -7,8 +7,8 @@
     <ProjectGuid>{E0AB247E-9E6C-4548-A582-A1D0D493A060}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ClassLibrary1</RootNamespace>
-    <AssemblyName>ClassLibrary1</AssemblyName>
+    <RootNamespace>AutomatedDoors</RootNamespace>
+    <AssemblyName>AutomatedDoors</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -33,12 +33,16 @@
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\..\Windows\Microsoft.NET\assembly\GAC_32\Microsoft.Xna.Framework\v4.0_4.0.0.0__842cf8be1de50553\Microsoft.Xna.Framework.dll</HintPath>
+      <Private>False</Private>
     </Reference>
+    <Reference Include="Microsoft.Xna.Framework.Game, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553" />
     <Reference Include="Stardew Valley">
       <HintPath>..\..\..\..\..\..\..\Games\steamapps\common\Stardew Valley\Stardew Valley.exe</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="StardewModdingAPI">
       <HintPath>..\..\..\..\..\..\..\Games\steamapps\common\Stardew Valley\StardewModdingAPI.exe</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -53,6 +57,11 @@
     <Compile Include="OLDVERSION.cs" />
     <Compile Include="AutomatedDoors.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="manifest.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

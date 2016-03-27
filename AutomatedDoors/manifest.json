@@ -1,0 +1,14 @@
+﻿{
+  "Name": "AutomatedDoors",
+  "Authour": "Disiesel",
+  "Version": {
+    "MajorVersion": 0,
+    "MinorVersion": 0,
+    "PatchVersion": 0,
+    "Build": "1"
+  },
+  "Description": "",
+  "UniqueID": "1abcfa07-2cf4-4dc3-a6e9-6068b642112b",
+  "PerSaveConfigs": false,
+  "EntryDll": "AutomatedDoors.dll"
+}
