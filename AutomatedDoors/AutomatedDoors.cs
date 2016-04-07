@@ -13,8 +13,8 @@ namespace AutomatedDoors
 
     public class AutomatedDoors : Mod
     {
-        private bool gotFired1;
-        private bool gotFired2;
+        private bool gotFired1 = false;
+        private bool gotFired2 = false ;
         public int openDoors;
         public int closeDoors;
         public bool openRainyDays;
@@ -75,7 +75,7 @@ namespace AutomatedDoors
                         }
                     }
                 }
-             if (!gotFired2 && Game1.timeOfDay == ModConfig.closeDoors)
+             if (!gotFired2 && Game1.timeOfDay >= ModConfig.closeDoors)
                 {
                     using (List<Building>.Enumerator enumerator = Game1.getFarm().buildings.GetEnumerator())
                     {
