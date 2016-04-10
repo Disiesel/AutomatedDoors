@@ -29,6 +29,18 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug1|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug1\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug2|AnyCPU'">
+    <OutputPath>bin\Debug2\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
@@ -36,12 +48,16 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.Xna.Framework.Game, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553" />
+    <Reference Include="Microsoft.Xna.Framework.Graphics, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Y:\SteamLibrary\steamapps\common\Stardew Valley\Microsoft.Xna.Framework.Graphics.dll</HintPath>
+    </Reference>
     <Reference Include="Stardew Valley">
-      <HintPath>..\..\..\..\..\..\..\Games\steamapps\common\Stardew Valley\Stardew Valley.exe</HintPath>
+      <HintPath>Y:\SteamLibrary\steamapps\common\Stardew Valley\Stardew Valley.exe</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="StardewModdingAPI">
-      <HintPath>..\..\..\..\..\..\..\Games\steamapps\common\Stardew Valley\StardewModdingAPI.exe</HintPath>
+      <HintPath>Y:\SteamLibrary\steamapps\common\Stardew Valley\StardewModdingAPI.exe</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -52,8 +68,13 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="xTile">
+      <HintPath>Y:\SteamLibrary\steamapps\common\Stardew Valley\xTile.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutomatedDoorsEditMenu.cs" />
+    <Compile Include="AutomatedDoorsConfig.cs" />
     <Compile Include="OLDVERSION.cs" />
     <Compile Include="AutomatedDoors.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

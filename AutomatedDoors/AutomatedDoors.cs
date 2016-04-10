@@ -1,112 +1,114 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO; 
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Buildings;
-using StardewValley.Locations;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
+using SMAPIAutomatedDoors;
 
 namespace AutomatedDoors
 {
 
     public class AutomatedDoors : Mod
     {
-        private bool gotFired1;
-        private bool gotFired2;
-        public int openDoors;
-        public int closeDoors;
-        public bool openRainyDays;
+        public static AutomatedDoorsConfig ModConfig { get; protected set; }
 
-        public static AutomatedDoorsConfig ModConfig { get; private set; }
+        private bool openDoorsEventFired;
+        private bool closeDoorsEventFired;
+        public int openDoorsTime;
+        public int closeDoorsTime;
+        public bool openRainyDays;
+        public bool openWinter;
+        public Dictionary<string, bool> buildings;
 
         public override void Entry(params object[] objects)
         {
-            ModConfig = new AutomatedDoorsConfig();
-            ModConfig = ModConfig.InitializeConfig(BaseConfigPath);
+            ModConfig = new AutomatedDoorsConfig().InitializeConfig(BaseConfigPath);
             GameEvents.UpdateTick += Events_UpdateTick;
             TimeEvents.DayOfMonthChanged += Events_NewDay;
-            Console.WriteLine("AutomatedDoors Has Loaded");
+            Console.WriteLine("AutomatedDoors Loaded ...... [OK]");
         }
 
         public void Events_NewDay(object sender, EventArgs e)
         {
-            gotFired1 = false;
-            gotFired2 = false; 
+            openDoorsEventFired = false;
+            closeDoorsEventFired = false; 
         }
 
         public void Events_UpdateTick(object sender, EventArgs e)
         {
             if (!Game1.hasLoadedGame)
-            return;
-            if (!gotFired1 && Game1.timeOfDay == ModConfig.openDoors && !Game1.IsWinter)
+            {
+                return;
+            }
+            
+            if (!openDoorsEventFired && Game1.timeOfDay == ModConfig.openDoorsTime && Game1.IsWinter == ModConfig.openWinter)
                 {
-                if (ModConfig.openRainyDays == true)
+                    if (ModConfig.openRainyDays == true)
                     {
-                        using (List<Building>.Enumerator enumerator = Game1.getFarm().buildings.GetEnumerator())
-                        {
-                            while (enumerator.MoveNext())
-                            {
-                                Building current = enumerator.Current;
-                                if (current.animalDoorOpen == false)
-                                {
-                                    current.doAction(new Vector2(current.animalDoor.X + current.tileX, current.animalDoor.Y + current.tileY), Game1.player);
-                                    gotFired1 = true;
-                                }
-                            }
-                        }
- 
+                        OpenBuildingDoors();
                     }
-
-                 else if (Game1.isRaining == false && Game1.isLightning == false)
+                    else if (Game1.isRaining == false && Game1.isLightning == false)
                     {
-                        using (List<Building>.Enumerator enumerator = Game1.getFarm().buildings.GetEnumerator())
-                        {
-                            while (enumerator.MoveNext())
-                            {
-                                Building current = enumerator.Current;
-                                if (current.animalDoorOpen == false)
-                                {
-                                    current.doAction(new Vector2(current.animalDoor.X + current.tileX, current.animalDoor.Y + current.tileY), Game1.player);
-                                    gotFired1 = true;
-                                }
-                            }
-                        }
+                        OpenBuildingDoors();
                     }
                 }
-             if (!gotFired2 && Game1.timeOfDay == ModConfig.closeDoors)
+             if (!closeDoorsEventFired && Game1.timeOfDay >= ModConfig.closeDoorsTime)
                 {
-                    using (List<Building>.Enumerator enumerator = Game1.getFarm().buildings.GetEnumerator())
-                    {
-                        while (enumerator.MoveNext())
-                        {
-                            Building current = enumerator.Current;
-                            if (current.animalDoorOpen)
-                            {
-                                current.doAction(new Vector2(current.animalDoor.X + current.tileX, current.animalDoor.Y + current.tileY), Game1.player);
-                                gotFired2 = true;
-                            }
-                        }
-                    }
+                    CloseBuildingDoors();
                 }
-        
+            
+            
         }
-                
-    }
-    
-    public class AutomatedDoorsConfig : Config
-    {
-        public int openDoors { get; set; }
-        public int closeDoors { get; set; }
-        public bool openRainyDays { get; set; }
 
-        public override T GenerateDefaultConfig<T>()
+        public void OpenBuildingDoors()
         {
-            openDoors = 600;
-            closeDoors = 1800;
-            openRainyDays = false;
-            return this as T;
+            using (List<Building>.Enumerator enumerator = Game1.getFarm().buildings.GetEnumerator())
+            {
+                while (enumerator.MoveNext())
+                {
+                    Building current = enumerator.Current;
+                    if ( !ModConfig.buildings.ContainsKey(current.nameOfIndoors) )
+                    {
+                        ModConfig.buildings.Add(current.nameOfIndoors, true);
+
+                        if (current.animalDoorOpen == false)
+                        {
+                            current.doAction(new Vector2(current.animalDoor.X + current.tileX, current.animalDoor.Y + current.tileY), Game1.player);
+                            openDoorsEventFired = true;
+                        }
+                    }
+                    else if (ModConfig.buildings.ContainsKey(current.nameOfIndoors))
+                    {
+                        if (current.animalDoorOpen == false && ModConfig.buildings[current.nameOfIndoors] == true )
+                        {
+                            current.doAction(new Vector2(current.animalDoor.X + current.tileX, current.animalDoor.Y + current.tileY), Game1.player);
+                            openDoorsEventFired = true;
+                        }
+                    }
+                }
+            }
+
+            ModConfig.UpdateConfig<AutomatedDoorsConfig>();
+            ModConfig.WriteConfig();
+        }
+
+        public void CloseBuildingDoors()
+        {
+            using (List<Building>.Enumerator enumerator = Game1.getFarm().buildings.GetEnumerator())
+            {
+                while (enumerator.MoveNext())
+                {
+                    Building current = enumerator.Current;
+                    if (current.animalDoorOpen)
+                    {
+                        current.doAction(new Vector2(current.animalDoor.X + current.tileX, current.animalDoor.Y + current.tileY), Game1.player);
+                        closeDoorsEventFired = true;
+                    }
+                }
+            }
         }
     }
 }
