@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿{
   "Name": "AutomatedDoors",
   "Authour": "Phate, SMAPI 39+ patch by Disiesel",
@@ -11,4 +12,19 @@
   "UniqueID": "1abcfa07-2cf4-4dc3-a6e9-6068b642112b",
   "PerSaveConfigs": false,
   "EntryDll": "AutomatedDoors.dll"
+=======
+﻿{
+  "Name": "AutomatedDoors",
+  "Authour": "Phate, SMAPI 39+ patch by Disiesel, azah",
+  "Version": {
+    "MajorVersion": 1,
+    "MinorVersion": 1,
+    "PatchVersion": 1,
+    "Build": "1"
+  },
+  "Description": "Automate opening & closing of farm building doors.",
+  "UniqueID": "1abcfa07-2cf4-4dc3-a6e9-6068b642112b",
+  "PerSaveConfigs": false,
+  "EntryDll": "AutomatedDoors.dll"
+>>>>>>> 65e2ef5545c4b4ba75cee138b37b05c5265dcfc0
 }
