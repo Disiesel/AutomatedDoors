@@ -19,7 +19,7 @@ namespace AutomatedDoors
 
         public override void Entry(IModHelper helper)
         {
-            _config = Helper.ReadConfig<AutomatedDoorsConfig>();
+            _config = helper.ReadConfig<AutomatedDoorsConfig>();
             TimeEvents.DayOfMonthChanged += Events_NewDay;
             GameEvents.OneSecondTick += Events_OneSecondTick;
         }
@@ -37,7 +37,7 @@ namespace AutomatedDoors
                 return;
             }
             
-            if (!openDoorsEventFired && Game1.timeOfDay == _config.timeDoorsOpen) //&& Game1.IsWinter == _config.openInWinter
+            if (!openDoorsEventFired && Game1.timeOfDay == _config.timeDoorsOpen && Game1.IsWinter == _config.openInWinter)
             {
                     if (_config.openOnRainyDays == true)
                     {
@@ -58,7 +58,7 @@ namespace AutomatedDoors
 
         public void OpenBuildingDoors()
         {
-            using (List<Building>.Enumerator enumerator = Game1.getFarm().buildings.GetEnumerator())
+            using (var enumerator = Game1.getFarm().buildings.GetEnumerator())
             {
                 while (enumerator.MoveNext())
                 {
@@ -83,11 +83,13 @@ namespace AutomatedDoors
                     }
                 }
             }
+
+            this.Helper.WriteConfig(_config);
         }
 
         public void CloseBuildingDoors()
         {
-            using (List<Building>.Enumerator enumerator = Game1.getFarm().buildings.GetEnumerator())
+            using (var enumerator = Game1.getFarm().buildings.GetEnumerator())
             {
                 while (enumerator.MoveNext())
                 {
