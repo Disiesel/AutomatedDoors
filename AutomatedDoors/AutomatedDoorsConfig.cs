@@ -14,6 +14,6 @@ namespace AutomatedDoors
         public int timeDoorsClose { get; set; } = 1810;
         public bool openOnRainyDays { get; set; } = false;
         public bool openInWinter { get; set; } = false;
-        public Dictionary<string, bool> buildings { get; set; } = new Dictionary<string, bool>();
+        public Dictionary<string, Dictionary<string, bool>> buildings { get; set; } = new Dictionary<string, Dictionary<string, bool>>();
     }
 }

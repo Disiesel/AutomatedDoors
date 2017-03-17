@@ -24,6 +24,7 @@ namespace AutomatedDoors
             GameEvents.OneSecondTick += Events_OneSecondTick;
         }
 
+
         public void Events_NewDay(object sender, EventArgs e)
         {
             openDoorsEventFired = false;
@@ -35,6 +36,11 @@ namespace AutomatedDoors
             if (!Game1.hasLoadedGame)
             {
                 return;
+            }
+
+            if (!_config.buildings.ContainsKey(Game1.player.name))
+            {
+                _config.buildings[Game1.player.name] = new Dictionary<string, bool>();
             }
             
             if (!openDoorsEventFired && Game1.timeOfDay == _config.timeDoorsOpen && Game1.IsWinter == _config.openInWinter)
@@ -63,9 +69,9 @@ namespace AutomatedDoors
                 while (enumerator.MoveNext())
                 {
                     Building current = enumerator.Current;
-                    if ( !_config.buildings.ContainsKey(current.nameOfIndoors) )
+                    if ( !_config.buildings[Game1.player.Name].ContainsKey(current.nameOfIndoors) )
                     {
-                        _config.buildings.Add(current.nameOfIndoors, true);
+                        _config.buildings[Game1.player.name].Add(current.nameOfIndoors, true);
 
                         if (current.animalDoorOpen == false)
                         {
@@ -73,9 +79,9 @@ namespace AutomatedDoors
                             openDoorsEventFired = true;
                         }
                     }
-                    else if (_config.buildings.ContainsKey(current.nameOfIndoors))
+                    else if (_config.buildings[Game1.player.name].ContainsKey(current.nameOfIndoors))
                     {
-                        if (current.animalDoorOpen == false && _config.buildings[current.nameOfIndoors] == true )
+                        if (current.animalDoorOpen == false && _config.buildings[Game1.player.name][current.nameOfIndoors] == true )
                         {
                             current.doAction(new Vector2(current.animalDoor.X + current.tileX, current.animalDoor.Y + current.tileY), Game1.player);
                             openDoorsEventFired = true;
