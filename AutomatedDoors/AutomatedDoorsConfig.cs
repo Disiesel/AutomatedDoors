@@ -6,27 +6,14 @@ using StardewModdingAPI;
 using System.Collections.Generic;
 using System;
 
-namespace SMAPIAutomatedDoors
+namespace AutomatedDoors
 {
-    public class AutomatedDoorsConfig : Config
+    public class AutomatedDoorsConfig
     {
-        public int openDoorsTime { get; set; }
-        public int closeDoorsTime { get; set; }
-        public bool openRainyDays { get; set; }
-        public bool openWinter { get; set; }
-        public Dictionary<string, bool> buildings { get; set; }
-        public Keys configKey;
-
-        public override T GenerateDefaultConfig<T>()
-        {
-            openDoorsTime = 620;
-            closeDoorsTime = 1810;
-            configKey = Keys.L;
-            openRainyDays = false;
-            openWinter = false;
-            buildings = new Dictionary<string, bool>();
-
-            return this as T;
-        }
+        public int timeDoorsOpen { get; set; } = 620;
+        public int timeDoorsClose { get; set; } = 1810;
+        public bool openOnRainyDays { get; set; } = false;
+        public bool openInWinter { get; set; } = false;
+        public Dictionary<string, bool> buildings { get; set; } = new Dictionary<string, bool>();
     }
 }
