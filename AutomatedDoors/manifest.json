@@ -1,10 +1,10 @@
 {
   "Name": "AutomatedDoors",
-  "Authour": "Phate, SMAPI 39+ patch by Disiesel, azah",
+  "Authour": "Phate, SMAPI 1.8+ patch by Disiesel, azah",
   "Version": {
     "MajorVersion": 1,
-    "MinorVersion": 1,
-    "PatchVersion": 2,
+    "MinorVersion": 3,
+    "PatchVersion": 0,
     "Build": "1"
   },
   "Description": "Automate opening & closing of farm building doors.",
