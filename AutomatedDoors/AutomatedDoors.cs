@@ -20,7 +20,7 @@ namespace AutomatedDoors
         public override void Entry(IModHelper helper)
         {
             _config = helper.ReadConfig<AutomatedDoorsConfig>();
-            TimeEvents.DayOfMonthChanged += Events_NewDay;
+            TimeEvents.AfterDayStarted += Events_NewDay;
             GameEvents.OneSecondTick += Events_OneSecondTick;
         }
 
@@ -38,14 +38,14 @@ namespace AutomatedDoors
                 return;
             }
 
-            if (!_config.buildings.ContainsKey(Game1.player.name))
+            if (!_config.Buildings.ContainsKey(Game1.player.name))
             {
-                _config.buildings[Game1.player.name] = new Dictionary<string, bool>();
+                _config.Buildings[Game1.player.name] = new Dictionary<string, bool>();
             }
             
-            if (!openDoorsEventFired && Game1.timeOfDay == _config.timeDoorsOpen && Game1.IsWinter == _config.openInWinter)
+            if (!openDoorsEventFired && Game1.timeOfDay == _config.TimeDoorsOpen && Game1.IsWinter == _config.OpenInWinter)
             {
-                    if (_config.openOnRainyDays == true)
+                    if (_config.OpenOnRainyDays == true)
                     {
                         OpenBuildingDoors();
                     }
@@ -54,7 +54,7 @@ namespace AutomatedDoors
                         OpenBuildingDoors();
                     }
                 }
-             if (!closeDoorsEventFired && Game1.timeOfDay >= _config.timeDoorsClose)
+             if (!closeDoorsEventFired && Game1.timeOfDay >= _config.TimeDoorsClose)
                 {
                     CloseBuildingDoors();
                 }
@@ -69,9 +69,9 @@ namespace AutomatedDoors
                 while (enumerator.MoveNext())
                 {
                     Building current = enumerator.Current;
-                    if ( !_config.buildings[Game1.player.Name].ContainsKey(current.nameOfIndoors) )
+                    if ( !_config.Buildings[Game1.player.Name].ContainsKey(current.nameOfIndoors) )
                     {
-                        _config.buildings[Game1.player.name].Add(current.nameOfIndoors, true);
+                        _config.Buildings[Game1.player.name].Add(current.nameOfIndoors, true);
 
                         if (current.animalDoorOpen == false)
                         {
@@ -79,9 +79,9 @@ namespace AutomatedDoors
                             openDoorsEventFired = true;
                         }
                     }
-                    else if (_config.buildings[Game1.player.name].ContainsKey(current.nameOfIndoors))
+                    else if (_config.Buildings[Game1.player.name].ContainsKey(current.nameOfIndoors))
                     {
-                        if (current.animalDoorOpen == false && _config.buildings[Game1.player.name][current.nameOfIndoors] == true )
+                        if (current.animalDoorOpen == false && _config.Buildings[Game1.player.name][current.nameOfIndoors] == true )
                         {
                             current.doAction(new Vector2(current.animalDoor.X + current.tileX, current.animalDoor.Y + current.tileY), Game1.player);
                             openDoorsEventFired = true;

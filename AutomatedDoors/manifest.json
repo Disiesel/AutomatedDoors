@@ -1,14 +1,13 @@
 {
   "Name": "AutomatedDoors",
-  "Authour": "Phate, SMAPI 1.8+ patch by Disiesel, azah",
+  "Author": "Phate, SMAPI 2.0+ patch by Disiesel, azah",
   "Version": {
     "MajorVersion": 1,
     "MinorVersion": 4,
-    "PatchVersion": 0,
+    "PatchVersion": 1,
     "Build": "1"
   },
   "Description": "Automate opening & closing of farm building doors.",
-  "UniqueID": "1abcfa07-2cf4-4dc3-a6e9-6068b642112b",
-  "PerSaveConfigs": false,
+  "UniqueID": "azah.automated-doors",
   "EntryDll": "AutomatedDoors.dll"
 }
