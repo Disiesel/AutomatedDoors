@@ -6,30 +6,24 @@ using StardewValley;
 using StardewValley.Buildings;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using SMAPIAutomatedDoors;
 
 namespace AutomatedDoors
 {
 
     public class AutomatedDoors : Mod
     {
-        public static AutomatedDoorsConfig ModConfig { get; protected set; }
+        private AutomatedDoorsConfig _config;
 
         private bool openDoorsEventFired;
         private bool closeDoorsEventFired;
-        public int openDoorsTime;
-        public int closeDoorsTime;
-        public bool openRainyDays;
-        public bool openWinter;
-        public Dictionary<string, bool> buildings;
 
-        public override void Entry(params object[] objects)
+        public override void Entry(IModHelper helper)
         {
-            ModConfig = new AutomatedDoorsConfig().InitializeConfig(BaseConfigPath);
-            GameEvents.UpdateTick += Events_UpdateTick;
-            TimeEvents.DayOfMonthChanged += Events_NewDay;
-            Console.WriteLine("AutomatedDoors Loaded ...... [OK]");
+            _config = helper.ReadConfig<AutomatedDoorsConfig>();
+            TimeEvents.AfterDayStarted += Events_NewDay;
+            GameEvents.OneSecondTick += Events_OneSecondTick;
         }
+
 
         public void Events_NewDay(object sender, EventArgs e)
         {
@@ -37,16 +31,21 @@ namespace AutomatedDoors
             closeDoorsEventFired = false; 
         }
 
-        public void Events_UpdateTick(object sender, EventArgs e)
+        public void Events_OneSecondTick(object sender, EventArgs e)
         {
             if (!Game1.hasLoadedGame)
             {
                 return;
             }
+
+            if (!_config.Buildings.ContainsKey(Game1.player.name))
+            {
+                _config.Buildings[Game1.player.name] = new Dictionary<string, bool>();
+            }
             
-            if (!openDoorsEventFired && Game1.timeOfDay == ModConfig.openDoorsTime && Game1.IsWinter == ModConfig.openWinter)
-                {
-                    if (ModConfig.openRainyDays == true)
+            if (!openDoorsEventFired && Game1.timeOfDay == _config.TimeDoorsOpen && Game1.IsWinter == _config.OpenInWinter)
+            {
+                    if (_config.OpenOnRainyDays == true)
                     {
                         OpenBuildingDoors();
                     }
@@ -55,7 +54,7 @@ namespace AutomatedDoors
                         OpenBuildingDoors();
                     }
                 }
-             if (!closeDoorsEventFired && Game1.timeOfDay >= ModConfig.closeDoorsTime)
+             if (!closeDoorsEventFired && Game1.timeOfDay >= _config.TimeDoorsClose)
                 {
                     CloseBuildingDoors();
                 }
@@ -65,14 +64,14 @@ namespace AutomatedDoors
 
         public void OpenBuildingDoors()
         {
-            using (List<Building>.Enumerator enumerator = Game1.getFarm().buildings.GetEnumerator())
+            using (var enumerator = Game1.getFarm().buildings.GetEnumerator())
             {
                 while (enumerator.MoveNext())
                 {
                     Building current = enumerator.Current;
-                    if ( !ModConfig.buildings.ContainsKey(current.nameOfIndoors) )
+                    if ( !_config.Buildings[Game1.player.Name].ContainsKey(current.nameOfIndoors) )
                     {
-                        ModConfig.buildings.Add(current.nameOfIndoors, true);
+                        _config.Buildings[Game1.player.name].Add(current.nameOfIndoors, true);
 
                         if (current.animalDoorOpen == false)
                         {
@@ -80,9 +79,9 @@ namespace AutomatedDoors
                             openDoorsEventFired = true;
                         }
                     }
-                    else if (ModConfig.buildings.ContainsKey(current.nameOfIndoors))
+                    else if (_config.Buildings[Game1.player.name].ContainsKey(current.nameOfIndoors))
                     {
-                        if (current.animalDoorOpen == false && ModConfig.buildings[current.nameOfIndoors] == true )
+                        if (current.animalDoorOpen == false && _config.Buildings[Game1.player.name][current.nameOfIndoors] == true )
                         {
                             current.doAction(new Vector2(current.animalDoor.X + current.tileX, current.animalDoor.Y + current.tileY), Game1.player);
                             openDoorsEventFired = true;
@@ -91,13 +90,12 @@ namespace AutomatedDoors
                 }
             }
 
-            ModConfig.UpdateConfig<AutomatedDoorsConfig>();
-            ModConfig.WriteConfig();
+            this.Helper.WriteConfig(_config);
         }
 
         public void CloseBuildingDoors()
         {
-            using (List<Building>.Enumerator enumerator = Game1.getFarm().buildings.GetEnumerator())
+            using (var enumerator = Game1.getFarm().buildings.GetEnumerator())
             {
                 while (enumerator.MoveNext())
                 {
